@@ -1,0 +1,14 @@
+Questão 2.1
+    O Spark é mais recomendado que o MapReduce quando o conjunto de dados a ser processado não é muito grande e possa
+ser armazenado na memória RAM. Neste caso o Spark tem vantagem, pois o MapReduce trabalha com dados em disco, o que
+torna o processo mais lento.
+
+Questão 2.2
+    RDD e Dataframe são coleções de elementos distribuidos, porém o RDD oferece uma API de baixo nível onde é possível
+realizar transformações e ações. Já o Dataframe mentém os dados organizados em colunas e é projetado para tornar o
+processamento de grandes quantidade de dados mais fácil.
+
+Questão 2.3
+    A vantagem do lazy evaluation é que quando se espera até uma ação ser chamada você tem todas as transformações
+que devem ser feitas para obter o resultados e essaa informação pode ser utilizada para otimizar o processo, como por
+exemplo, executar um número mínimo de transformações para chegar ao resultado esperado.
