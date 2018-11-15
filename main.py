@@ -1,6 +1,19 @@
 from pyspark import SparkContext, SQLContext
 from pyspark.sql import Row
 
+
+def get_country_count(data):
+    # Step 1: create a tuples with the country and the number 1
+    country = data.map(lambda line: (line[11], 1))
+
+    # Step 2: add the numbers for the same country
+    country_cnt = country.reduceByKey(lambda val1, val2: val1 + val2)
+
+    # Step 3: Sorting (not necessary)
+    return country_cnt.sortBy(lambda item: item[1], ascending=False)
+
+
+
 sc = SparkContext()
 sqlc = SQLContext(sc)
 
@@ -14,15 +27,7 @@ data = data_file.map(lambda line: line.split(","))
 # 'ID ', 'name ', 'category ', 'main_category ', 'currency ', 'deadline ', 'goal ', 'launched ', 'pledged ', 'state '
 # , 'backers ', 'country ', 'usd pledged '
 
-country = data.map(lambda line: (line[11], 1))
-print(country.take(5))
-
-country_cnt = country.reduceByKey(lambda val1, val2: val1 + val2)
-print(country_cnt.take(5))
-
-sorted_country_cnt = country_cnt.sortBy(lambda item: item[1], ascending=False)
-print(sorted_country_cnt.collect())
-
-srtd_country = sorted_country_cnt.map(lambda x: Row(country=x[0], count=int(x[1])))
-schema_country = sqlc.createDataFrame(srtd_country)
+# Get the number of projects of each country and write the result into a csv file
+country_count = get_country_count(data).map(lambda x: Row(country=x[0], count=int(x[1])))
+schema_country = sqlc.createDataFrame(country_count)
 schema_country.toPandas().to_csv("country_count.csv", columns=["country", "count"], index=False, quotechar='\'')

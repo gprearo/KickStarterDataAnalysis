@@ -10,7 +10,7 @@ def fix_title(line, field_cnt):
     This function concatenates the fields next to the name until the appropriated number of fields is reached,
         replacing the commas with semicolons
 
-    :param line: list with the fields of one line of the dataset
+    :param line: list with the values of one line of the dataset
     :param field_cnt: number of the dataset fields
     :return: returns the list semicolons instead of commas on field "name"
     """
